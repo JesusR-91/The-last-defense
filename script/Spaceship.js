@@ -10,7 +10,13 @@ class Spaceship1 {
 
         this.mov = 30;
 
+        this.projectileArray = [];
+
+        this.isShooting = false;
+       
+       
     }
+   
 
     draw = () =>{
         ctx.drawImage(this.img, this.x, this.y, this.w, this.h);
@@ -27,6 +33,38 @@ class Spaceship1 {
             this.x -= this.mov;
         }
     }
+
+    shoot = (event) =>{
+
+        if (event.code === "Space" && this.isShooting === false) {
+            let newProj = new Projectile(this.x +(this.w/2), this.y)
+            this.projectileArray.push(newProj);
+            console.log(this.projectileArray)
+            this.isShooting = true;
+        } else if (this.isShooting === true){
+            setTimeout(()=>{
+                this.isShooting = false;
+            },750)
+
+        }else if ( this.projectileArray[0].x < 0){
+            this.projectileArray.shift();
+        }
+
+    }
+
 }
+
+class Heart {
+    constructor(){
+        this.img = new Image();
+        this.img.src = "Images/heart.png";
+        this.x = 30;
+        this.y = 15;
+        this.w = 20;
+        this.h = 20;
+    }
+}
+
+
 
 

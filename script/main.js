@@ -48,4 +48,8 @@ window.addEventListener("keydown", (event) => {
   ) {
     newLevel1.spaceship.movement(event);
   }
+
+  if (newLevel1.isGameOn === true && event.code === "Space"){
+    newLevel1.spaceship.shoot(event);
+  }
 });
