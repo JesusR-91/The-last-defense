@@ -1,17 +1,20 @@
 class Enemy1 {
   constructor() {
     this.img = new Image();
-    this.img.src = "Images/enemy1.png";
+    this.img.src = "../Images/enemy1.png";
 
     this.x = Math.random() * canvas.width;
+    
     this.y = -20;
     this.w = 70;
     this.h = 100;
+
     this.movX = 2;
     this.movY = 1;
 
     this.isMovingRight = true;
     this.isMovingDown = true;
+
   }
 
   draw = () => {
@@ -26,14 +29,8 @@ class Enemy1 {
     }
 
     if (this.isMovingDown === true) {
-        this.y += this.movY;
+      this.y += this.movY;
     }
-
-    // if (isBallMovingDown === true) {
-    //   ballPositionY += this.movX;
-    // } else {
-    //   ballPositionY -= 2 + speed;
-    // }
   };
 
   wallCollisions = () => {
@@ -44,3 +41,4 @@ class Enemy1 {
     }
   };
 }
+
