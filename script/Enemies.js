@@ -4,7 +4,7 @@ class Enemy1 {
     this.img.src = "../Images/enemy1.png";
 
     this.x = Math.random() * canvas.width;
-    
+
     this.y = -20;
     this.w = 70;
     this.h = 100;
@@ -12,9 +12,13 @@ class Enemy1 {
     this.movX = 2;
     this.movY = 1;
 
+    this.projectileArray = [];
+
     this.isMovingRight = true;
     this.isMovingDown = true;
 
+    this.isShooting = false;
+    this.seconds = 0;
   }
 
   draw = () => {
@@ -40,5 +44,17 @@ class Enemy1 {
       this.isMovingRight = true;
     }
   };
-}
 
+  shoot = () => {
+    this.seconds++
+      if (this.isShooting === true && this.seconds % 60 === 0) {
+        let newProj = new Projectile((this.x + (this.w / 2)), this.y);
+        this.projectileArray.push(newProj);
+      }
+     
+      if (this.projectileArray.length > 0 && this.projectileArray[0].x < 0) {
+        this.projectileArray.shift();
+      }
+  };
+
+}

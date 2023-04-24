@@ -44,8 +44,9 @@ class Spaceship1 {
             setTimeout(()=>{
                 this.isShooting = false;
             },300)
+        }
 
-        }else if ( this.projectileArray[0].x < 0){
+        if ( this.projectileArray[0].x < 0){
             this.projectileArray.shift();
         }
 

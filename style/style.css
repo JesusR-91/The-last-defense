@@ -115,3 +115,8 @@ h1 {
 .my-canvas, #game-over{
     display: none;
 }
+
+#sound {
+    width: 50px;
+    height: 50px;
+}

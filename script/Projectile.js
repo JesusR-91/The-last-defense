@@ -7,7 +7,7 @@ class Projectile {
     this.y = y;
     this.w = 5;
     this.h = 10;
-    this.speed = 2;
+    this.speed = 4;
   }
 
   draw = () => {
@@ -17,6 +17,8 @@ class Projectile {
   movement = (enemOrPlay) => {
     if (enemOrPlay === true) {
       this.y -= this.speed;
+    } else {
+      this.y += this.speed;
     }
   };
 }
