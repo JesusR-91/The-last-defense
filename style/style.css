@@ -6,22 +6,22 @@
 body {
     margin: 0;
     font-family: 'Orbitron', sans-serif;
-    margin: 5% 5% 0 5%;
     background-color: black;
-    width: 90%;
+    width: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    flex-direction: column;
+    justify-content: space-evenly;
+    flex-direction: row;    
 }
 #screens{
     width: 70%;
-    height: 60%;
+    height: 80%;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
     flex-direction: row;
-
+    position: relative;
+    top: -100;
 }
 
 #sound {
@@ -34,7 +34,7 @@ body {
 }
 
 #main-screen {
-    margin: 15% 5% 0 5%;
+    margin: 2% 5% 0 5%;
     background-image: url("../Images/bg.jpg");
     background-size: cover;
     background-position: center;
@@ -90,15 +90,6 @@ body {
     text-align: center;
 }
 
-.my-canvas {
-    background-color: lightgreen;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 20px;
-    position: relative;
-    top: -20px;
-}
 
 #game-over {
     background-image: url("../Images/game-over.jpg");
@@ -110,9 +101,9 @@ body {
     flex-direction: column;
     text-align: center;
     border-radius: 20px;
-    width: 150%;
+    width: 100%;
     position: relative;
-    top: 200px;
+    top: 150px;
     
 }
 

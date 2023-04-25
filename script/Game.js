@@ -2,7 +2,9 @@ class Level1 {
   //PROPERTIES
   constructor() {
     this.bg = new Image();
-    this.bg.src = "Images/screenplay2.jpg";
+    this.bg.src = "Images/screenplay1.jpg";
+    this.bgY = 0;
+
 
     this.spaceship = new Spaceship1();
 
@@ -17,6 +19,13 @@ class Level1 {
   //METHODS
 
   bgDraw = () => {
+    this.bgY--
+    // Testing movement in bg
+    //ctx.drawImage(this.bg, 0, this.bgY, canvas.width, canvas.height);
+   
+    // if (this.bgY === -200){
+    //   this.bgY = 0;
+    // }
     ctx.drawImage(this.bg, 0, 0, canvas.width, canvas.height);
   };
 
@@ -31,13 +40,16 @@ class Level1 {
       this.enemyArray.length === 0 ||
       this.enemyArray[0].y === canvas.height / 2
     ) {
-      let randomNum = Math.random();
+      let randomNum = Math.random() * 3;
 
-      if (randomNum < 0.5){
+      if (randomNum < 1){
         let newEnemy = new Enemy1();
         this.enemyArray.push(newEnemy);
-      } else {
+      } else if (randomNum < 2){
         let newEnemy = new Enemy2();
+        this.enemyArray.push(newEnemy);
+      } else {
+        let newEnemy = new Enemy3();
         this.enemyArray.push(newEnemy);
       }
       
@@ -90,7 +102,7 @@ class Level1 {
           // this.enemyArray[indexEnemy].img.src = "Images/explosion-transformed.png";
           count.innerText = Number(count.innerText) + 5;
           // setTimeout(() => {
-            this.enemyArray.splice(indexEnemy, 1);
+          this.enemyArray.splice(indexEnemy, 1);
           // }, 500);
         }
       });
@@ -107,7 +119,7 @@ class Level1 {
           projectile.h + projectile.y  - 5> this.spaceship.y
         ) {
           enemy.projectileArray.splice(indexProjec, 1);
-          // this.playerLifeCount.pop();
+          this.playerLifeCount.pop();
         }
       });
     })
@@ -163,25 +175,15 @@ class Level1 {
         asteroid.h - 10 + asteroid.y > this.spaceship.y &&
         this.playerLifeCount.length > 0
       ) {
-
-        // Todo animación
-        // let explosion = new Image();
-        // explosion.src = "Images/asteroid-explosion.png";
-        // ctx.drawImage(explosion, asteroid.x, asteroid.y, asteroid.w, asteroid.h)
-        
-        setTimeout (()=>{
-          
-        }, 2000)
         this.asteroidArray.splice(indexAsteroid, 1);
-        // this.playerLifeCount.pop();
-        // count.innerHTML = `${count.innerText++}`;
+        this.playerLifeCount.pop();
       } else if (this.playerLifeCount.length === 0) {
         this.gameOver();
       }
     })
   };
 
-  
+
 
   gameOver = () => {
     this.isGameOn = false;
@@ -213,6 +215,11 @@ class Level1 {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     //TODO ACTIONS
+
+
+    
+    this.spaceship.movement2();
+
     this.enemiesSpawn();
     this.asteroidSpawn();
     this.asteroidArray.forEach((asteroid) =>{
@@ -277,3 +284,4 @@ class Level1 {
     }
   };
 }
+
