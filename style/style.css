@@ -8,18 +8,36 @@ body {
     font-family: 'Orbitron', sans-serif;
     margin: 5% 5% 0 5%;
     background-color: black;
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+}
+#screens{
+    width: 70%;
+    height: 60%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: row;
+
 }
 
 #sound {
     width: 50px;
     height: 50px;
+    position: absolute;
+    top: 50%;
+    right: 100px;
+    
 }
 
 #main-screen {
+    margin: 15% 5% 0 5%;
     background-image: url("../Images/bg.jpg");
     background-size: cover;
     background-position: center;
-    height: 600px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -33,7 +51,7 @@ body {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 10%;
+    gap: 15%;
     width: 500px;
     height: 300px;
 }
@@ -60,6 +78,14 @@ body {
     height: 150px;
 }
 
+#instructions-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+
 #instructions h2 {
     text-align: center;
 }
@@ -69,9 +95,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: auto;
-    margin-bottom: 0;
-
+    border-radius: 20px;
+    position: relative;
+    top: -20px;
 }
 
 #game-over {
@@ -84,6 +110,9 @@ body {
     flex-direction: column;
     text-align: center;
     border-radius: 20px;
+    width: 150%;
+    position: relative;
+    top: 200px;
     
 }
 
@@ -120,7 +149,7 @@ h1 {
     color: white;
     display: flex;
     font-size: 30px;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     text-align: center;
 }
@@ -129,14 +158,17 @@ h1 {
 
 #footer {
     color: white;
-    text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    align-items: center
+    align-items: center;
+    padding: 10px;
+    position: relative;
+    top: 200px;
    
 }
 
 .my-canvas, #game-over, #highScoreList, #counter {
     display: none;
 }
+

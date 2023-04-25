@@ -77,7 +77,10 @@ let newLevel1;
   canvas.style.display = "block";
   countDOM.style.display = "flex";
   song1.pause();
-  song2.play();
+
+  if (volumBtn.innerHTML === `<i class="fa-solid fa-volume-high fa-spin-pulse"></i>`){
+    song2.play();
+  } 
 
 // CREATE THE OBJECT
 
@@ -110,7 +113,7 @@ const restart = ()=>{
   song2.restart;
   song2.play();
 
-  highScoreList.style.display = "none";
+  highScoreDOM.style.display = "none";
 
 }
 
@@ -178,12 +181,13 @@ const highScore = "highScores";
 
 const checkHighScore = (score) => {
   const highScores = JSON.parse(localStorage.getItem(highScore)) ?? [];
-  const lowestScore = highScores[numOfHighScores - 1]?.score ?? 0;
+  const lowestScore = highScores[numOfHighScores - 1].score ?? 0;
   
   if (score > lowestScore) {
     saveHighScore(score, highScores);
-    showHighScores(); 
   }
+
+  showHighScores(); 
 }
 
 const saveHighScore = (score, highScores) => {

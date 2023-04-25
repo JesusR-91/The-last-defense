@@ -31,8 +31,16 @@ class Level1 {
       this.enemyArray.length === 0 ||
       this.enemyArray[0].y === canvas.height / 2
     ) {
-      let newEnemy = new Enemy1();
-      this.enemyArray.push(newEnemy);
+      let randomNum = Math.random();
+
+      if (randomNum < 0.5){
+        let newEnemy = new Enemy1();
+        this.enemyArray.push(newEnemy);
+      } else {
+        let newEnemy = new Enemy2();
+        this.enemyArray.push(newEnemy);
+      }
+      
     } else if (this.enemyArray[0].y > canvas.height) {
       this.enemyArray.shift();
     }

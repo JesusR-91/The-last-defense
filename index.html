@@ -14,62 +14,67 @@
 
     <div><button id = "sound"><i class="fa-solid fa-volume-high fa-spin-pulse"></i></button></div>
 
+    <div id = "screens">
+        <!-- MAIN SCREEN -->
+        <div id="main-screen" class = "container">
 
-    <!-- MAIN SCREEN -->
-    <div id="main-screen" class = "container">
+            <h1>THE LAST DEFENSE</h1>
+            <div id = "intro">
+                <div id = "instructions">
+                    <h2>INSTRUCTIONS</h2>
 
-        <h1>THE LAST DEFENSE</h1>
-        <div id = "intro">
-            <div id = "instructions">
-                <h2>INSTRUCTIONS</h2>
-
-                <div>
-                    <img class = "arrows" src="Images/controls.png" alt="Arrows">
-                    <img class = "spacebar" src="Images/Spacebar.png" alt="Spacebar">
+                    <div id = "instructions-img">
+                        <img class = "arrows" src="Images/controls.png" alt="Arrows">
+                        <img class = "spacebar" src="Images/Spacebar.png" alt="Spacebar">
+                    </div>
+                    
                 </div>
-                
+                <button id="start-btn">START!</button>
             </div>
-            <button id="start-btn">START!</button>
         </div>
-    </div>
-   
-
-    <!-- Level 1 screen -->
-    <div class = "container">
-        <canvas id = "level1" class="my-canvas" width="500" height="850"></canvas>
-    </div>
-
-    <!-- Level 2 screen --
-
-    <div class = "container">
-        <canvas id = "level2" class="my-canvas" width="500" height="850"></canvas>
-    </div>
-
-    Level 3 screen 
-
-    <div class = "container">
-        <canvas id = "level3" class = "my-canvas" width="500" height="850"></canvas>
-    </div>  -->
     
-    <!-- GAME OVER SCREEN -->
 
-    <div id="game-over" class = "container">
-        <h1>GAME OVER</h1>
-        <div>
-            <button id="restart-button">TRY AGAIN!</button>
+        <!-- Level 1 screen -->
+        <div class = "container">
+            <canvas id = "level1" class="my-canvas" width="500" height="800"></canvas>
+        </div>
+
+        <!-- Level 2 screen --
+
+        <div class = "container">
+            <canvas id = "level2" class="my-canvas" width="500" height="850"></canvas>
+        </div>
+
+        Level 3 screen 
+
+        <div class = "container">
+            <canvas id = "level3" class = "my-canvas" width="500" height="850"></canvas>
+        </div>  -->
+        
+        <!-- GAME OVER SCREEN -->
+
+        <div id="game-over" class = "container">
+            <h1>GAME OVER</h1>
+            <div>
+                <button id="restart-button">TRY AGAIN!</button>
+            </div>
+        </div>
+
+        <!-- fOOTER -->
+
+
+        <div id = "footer">
+        
+            <div id= "counter"> <span class = "count"> 0 </span> </div>
+
+            <div id = "highScoreList">
+                <h2>HIGH SCORES</h2>
+
+                <ol id= "highScores"></ol>
+            </div>
         </div>
     </div>
-
-    <div id = "footer">
     
-        <div id= "counter"> <span class = "count"> 0 </span> </div>
-
-        <div id = "highScoreList">
-            <h2>HIGH SCORES</h2>
-
-            <ol id= "highScores"></ol>
-        </div>
-    </div>
 
 
     <script src="script/Asteroids.js"></script>
