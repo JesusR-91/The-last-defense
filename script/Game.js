@@ -12,11 +12,6 @@ class Level1 {
     this.playerLifeCount = [new Heart(1), new Heart(2), new Heart(3)];
 
     this.isGameOn = true;
-
-    // test
-    // this.a = new Image()
-    // this.a.src = "Images/asteroid.png"
-    this.frames = 0
   }
 
   //METHODS
@@ -50,7 +45,6 @@ class Level1 {
     ) {
       let newAsteroid = new Asteroid();
       this.asteroidArray.push(newAsteroid);
-      // console.log(this.asteroidArray.length);
     } else if (this.asteroidArray[0].y > canvas.height) {
       this.asteroidArray.shift();
     }
@@ -67,7 +61,7 @@ class Level1 {
       ) {
         
         this.enemyArray.splice(indexEnemy, 1);
-        // this.playerLifeCount.pop();
+        this.playerLifeCount.pop();
       
       } else if (this.playerLifeCount.length === 0) {
         this.gameOver();
@@ -80,16 +74,16 @@ class Level1 {
     this.spaceship.projectileArray.forEach((projec) => {
       this.enemyArray.forEach((enemy, indexEnemy) => {
         if (
-          enemy.x < projec.x + projec.w &&
-          enemy.x + projec.w > projec.x &&
+          projec.x  < enemy.x + enemy.w &&
+          projec.x + enemy.w > enemy.x + 5 &&
           enemy.y < projec.y + projec.h &&
-          enemy.h + enemy.y > projec.y
+          enemy.h + enemy.y  > projec.y 
         ) {
-          this.enemyArray[indexEnemy].img.src = "Images/explosion-transformed.png";
-          setTimeout(() => {
+          // this.enemyArray[indexEnemy].img.src = "Images/explosion-transformed.png";
+          count.innerText = Number(count.innerText) + 5;
+          // setTimeout(() => {
             this.enemyArray.splice(indexEnemy, 1);
-          }, 500);
-          // count.innerText += 5
+          // }, 500);
         }
       });
     })
@@ -106,6 +100,22 @@ class Level1 {
         ) {
           enemy.projectileArray.splice(indexProjec, 1);
           // this.playerLifeCount.pop();
+        }
+      });
+    })
+  };
+
+  checkCollisionProjectileSpaceshipAsteroid = () => {
+    this.asteroidArray.forEach((asteroid,indexAsteroid) => {
+      this.spaceship.projectileArray.forEach((projectile,indexProjec) => {
+        if (
+          projectile.x < asteroid.x + asteroid.w &&
+          projectile.x + asteroid.w > asteroid.x &&
+          projectile.y < asteroid.y + asteroid.h &&
+          projectile.h + projectile.y > asteroid.y
+        ) {
+          this.spaceship.projectileArray.splice(indexProjec, 1);
+          this.asteroidArray.splice(indexAsteroid,1)
         }
       });
     })
@@ -163,37 +173,32 @@ class Level1 {
     })
   };
 
-  rotateAsteroid = () => {
-    this.asteroidArray.forEach((asteroid) => {
-
-      // let count = 0;
-      
-      // for (let i = 0; i < 7; i++) {
-      //   count++
-      //   if(count === 1) {
-      //     asteroid.img.src = "Images/asteroid 1.1.png";
-      //   } else if( count === 2) {
-      //     asteroid.img.src = "Images/asteroid 1.2.png";
-      //   } else if ( count === 3) {
-      //     asteroid.img.src = "Images/asteroid 1.3.png";
-      //   } else if (count === 4){
-      //     asteroid.img.src = "Images/asteroid 1.4.png";
-      //   } else if (count === 5) {
-      //     asteroid.img.src = "Images/asteroid 1.5.png";
-      //   } else if (count === 6) {
-      //     count = 0;
-      //     asteroid.img.src = "Images/asteroid.png";
-      //   }
-      // }  
-    })
-  };
+  
 
   gameOver = () => {
     this.isGameOn = false;
     canvas.style.display = "none";
     gameOverScreen.style.display = "flex";
-  };
+    highScoreDOM.style.display = "contents";
 
+    checkHighScore(count.innerText); 
+
+
+    if (count.innerText < 20) {
+      count.innerText = count.innerText + " points. You can do it better!";
+    } else if (count.innerText < 100) {
+      count.innerText = count.innerText + " points. Great job!";
+    } else if (count.innerText > 100) {
+      count.innerText = count.innerText + " points. You are a hero! Humanity needs more pilots like you!";
+    }
+    
+
+    if ((volumBtn.innerHTML !== `<i class="fa-solid fa-volume-xmark" style="color: #000000;"></i>`)){
+      song2.pause();
+      song3.play();
+    } 
+
+  };
 
   gameLoop = () => {
     //TODO CLEAN THE CANVAS
@@ -202,9 +207,10 @@ class Level1 {
     //TODO ACTIONS
     this.enemiesSpawn();
     this.asteroidSpawn();
-    setTimeout (()=>{
-      this.rotateAsteroid();
-    },1000)
+    this.asteroidArray.forEach((asteroid) =>{
+      asteroid.rotateAsteroid();
+    })
+    
 
     this.enemyArray.forEach((enemy) => {
       enemy.wallCollisions();
@@ -223,8 +229,6 @@ class Level1 {
       enemy.shoot();
       enemy.projectileArray.forEach((projectile) => {
         projectile.movement(false);
-        // console.log(projectileArray);
-
       });
     })  
 
@@ -233,6 +237,7 @@ class Level1 {
     this.checkCollisionAsterpodSpaceship();
     this.checkCollisionEnemyAsteroid();
     this.checkCollisionProjectileEnemySpaceship();
+    this.checkCollisionProjectileSpaceshipAsteroid();
 
     //TODO DRAW ELEMENTS
 

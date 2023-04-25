@@ -10,6 +10,10 @@
 </head>
 <body>
 
+    <!-- SOUND BUTTON -->
+
+    <div><button id = "sound"><i class="fa-solid fa-volume-high fa-spin-pulse"></i></button></div>
+
 
     <!-- MAIN SCREEN -->
     <div id="main-screen" class = "container">
@@ -17,8 +21,13 @@
         <h1>THE LAST DEFENSE</h1>
         <div id = "intro">
             <div id = "instructions">
-                <h2>Instructions</h2>
-                <img class = "arrows" src="Images/controls.png" alt="controls">
+                <h2>INSTRUCTIONS</h2>
+
+                <div>
+                    <img class = "arrows" src="Images/controls.png" alt="Arrows">
+                    <img class = "spacebar" src="Images/Spacebar.png" alt="Spacebar">
+                </div>
+                
             </div>
             <button id="start-btn">START!</button>
         </div>
@@ -52,9 +61,14 @@
     </div>
 
     <div id = "footer">
-        <button id = "sound"><i class="fa-solid fa-volume-high fa-spin-pulse"></i></button>
     
         <div id= "counter"> <span class = "count"> 0 </span> </div>
+
+        <div id = "highScoreList">
+            <h2>HIGH SCORES</h2>
+
+            <ol id= "highScores"></ol>
+        </div>
     </div>
 
 

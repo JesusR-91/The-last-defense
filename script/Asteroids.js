@@ -1,5 +1,6 @@
 class Asteroid {
     constructor() {
+
       this.img1 = new Image();
       this.img1.src = "Images/asteroid.png";
 
@@ -21,12 +22,17 @@ class Asteroid {
       this.img7 = new Image();
       this.img7.src = "Images/asteroid1.6.png";
 
+      this.imgArray = [this.img1, this.img2, this.img3, this.img4, this.img5, this.img6, this.img7]
+
       this.x = Math.random() * (canvas.width - 20);
       this.y = -20;
       this.w = 60;
       this.h = 60;
   
       this.movY = 3;
+
+      this.frames = 0;
+
     }
   
     movement = () => {
@@ -34,9 +40,29 @@ class Asteroid {
     };
   
     draw = () => {
-        //console.log( this.x, this.y)
+      
         ctx.drawImage(this.img1, this.x, this.y, this.w, this.h);
       
     };
+
+    rotateAsteroid = () => {     
+      for (let i = 0; i < 7; i++) {
+        this.frames++
+        if(this.frames === 60) {
+          this.img1 = this.imgArray[1];
+        } else if (this.frames === 120) {
+          this.img1 = this.imgArray[2];
+        } else if (this.frames === 180) {
+          this.img1 = this.imgArray[3];
+        } else if (this.frames === 240){
+          this.img1 = this.imgArray[4];
+        } else if (this.frames === 300) {
+          this.img1 = this.imgArray[5];
+        } else if (this.frames === 360) {
+          this.frames = 0;
+          this.img1 = this.imgArray[6];
+        } 
+     };
+    }
   }
   
