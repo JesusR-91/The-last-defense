@@ -8,12 +8,18 @@ class Spaceship1 {
     this.w = 50;
     this.h = 80;
 
-    this.mov = 30;
+    this.mov = 5;
 
     this.projectileArray = [];
 
     this.isShooting = false;
     this.isMoving = false;
+
+    // Testing auto movement
+    this.isMovingRight = false;
+    this.isMovingLeft = false;
+    this.isMovingDown = false;
+    this.isMovingUp = false;
   }
 
   draw = () => {
@@ -23,18 +29,26 @@ class Spaceship1 {
   movement = (event) => {
     if (this.isMoving === true) {
       if (event.code === "ArrowUp" && this.y >= canvas.height / 2) {
+        this.isMovingUp = true;
+        this.isMovingDown = false;
         this.y -= this.mov;
       } else if (
         event.code === "ArrowDown" &&
         this.y <= canvas.height - this.h
       ) {
+        this.isMovingUp = false;
+        this.isMovingDown = true;
         this.y += this.mov;
       } else if (
         event.code === "ArrowRight" &&
         this.x <= canvas.width - this.w
       ) {
+        this.isMovingRight = true;
+        this.isMovingLeft = false;
         this.x += this.mov;
       } else if (event.code === "ArrowLeft" && this.x >= 0) {
+        this.isMovingRight = false;
+        this.isMovingLeft = true;
         this.x -= this.mov;
       }
     }
@@ -43,6 +57,20 @@ class Spaceship1 {
       this.isMoving = false;
     }, 50);
   };
+
+  automovement = () => {
+    if ((this.isMovingUp === true ) && (this.y > (canvas.height / 2))) {
+      this.y--;
+    } else if ((this.isMovingDown === true) && (this.y < (canvas.height - 50))) {
+      this.y++;
+    } 
+    
+    if ((this.isMovingRight === true) && (this.x < canvas.width)) {
+      this.x++;
+    } else if ((this.isMovingLeft === true) && (this.x > 0)){
+      this.x--;
+    }
+  }
 
   movement2 = () => {
     this.isMoving = true;

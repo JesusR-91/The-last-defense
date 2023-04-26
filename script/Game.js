@@ -367,6 +367,7 @@ class Level1 {
 
     //PLAYER
     this.spaceship.movement2();
+    this.spaceship.automovement();
     this.spaceship.projectileArray.forEach((projectile) => {
       projectile.movement(true);
     });
