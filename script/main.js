@@ -19,6 +19,8 @@ const ctx = canvas.getContext("2d");
 const highScoreDOM = document.querySelector("#highScoreList");
 const highScoreList = document.querySelector("#highScores");
 
+let time = 0;
+
 // MUSIC
 
 // INTRO-SONG
@@ -57,21 +59,25 @@ const startGame = () => {
   mainScreen.style.display = "none";
   canvas.style.display = "block";
   countDOM.style.display = "flex";
-  song1.pause();
+  volumBtn.innerHTML = `<i class="fa-solid fa-volume-high fa-spin-pulse"></i>`;
+  song2.play();
 
-  if (
-    volumBtn.innerHTML ===
-    `<i class="fa-solid fa-volume-high fa-spin-pulse"></i>`
-  ) {
-    song2.play();
-  }
+
+  // Time controller : defines the timing of the game
+  setInterval (()=>{
+    time++
+  },1000);
+
+ 
 
   // CREATE THE OBJECT
 
   newLevel1 = new Level1();
 
-  // Shooting intervasl
+  // Shooting intervasl for enemies
+
   setInterval(() => {
+    //Regular enemies    
     newLevel1.enemyArray.forEach((enemy) => {
       if (enemy.isShooting === true) {
         enemy.isShooting = false;
@@ -79,21 +85,13 @@ const startGame = () => {
         enemy.isShooting = true;
       }
     });
+    //Boss
     if (newLevel1.boss.isShooting === true) {
       newLevel1.boss.isShooting = false;
     } else {
       newLevel1.boss.isShooting = true;
     }
   }, 1500);
-
-  // BOSS IMPLEMENTATIOn
-  // setInterval(() => {
-  //   if (newLevel1.boss === true) {
-  //       enemy.isShooting = false;
-  //   } else {
-  //       enemy.isShooting = true;
-  //   }
-  // }, 1500);
 
   // RECURSION
 

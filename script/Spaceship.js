@@ -69,15 +69,31 @@ class Heart {
   constructor(x) {
     this.img = new Image();
     this.img.src = "Images/heart.png";
+    
     if (x === 1) {
       this.x = 15;
     } else if (x === 2) {
       this.x = 45;
     } else if (x === 3) {
       this.x = 75;
+    } else if (x === 4) {
+      this.x = 105;
+    } else if (x === 5) {
+      this.x = 135;
+    } else {
+      this.x = x;
     }
+
     this.y = 15;
     this.w = 20;
     this.h = 20;
+  } 
+
+  draw = () =>{
+    ctx.drawImage(this.img, this.x, this.y, this.w, this.h);
+  };
+
+  movement = () =>{
+    this.y++
   }
 }

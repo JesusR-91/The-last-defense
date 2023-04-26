@@ -1,7 +1,6 @@
 class Level1 {
   //PROPERTIES
   constructor() {
-
     // Background
     this.bg = new Image();
     this.bg.src = "Images/screenplay1.jpg";
@@ -13,23 +12,27 @@ class Level1 {
     //Player
 
     this.spaceship = new Spaceship1();
-    this.playerLifeCount = [new Heart(1), new Heart(2), new Heart(3)];
+    const heart1 = new Heart(1);
+    const heart2 = new Heart(2);
+    const heart3 = new Heart(3);
+
+    this.playerLifeCount = [heart1, heart2, heart3];
 
     //Enemies
     this.enemyArray = [];
     this.explosionEnemyArray = [];
-
+    this.isSpawing = true; //Define if the regular enemies are spawing or not
 
     //Asteroids
     this.asteroidArray = [];
     this.explosionAsteroidArray = [];
 
-    //Boss 
-    //Working on it
+    //Boss
     this.boss = new Boss1();
-    this.isBossActive = false;
+    this.isBoss1Active = false; //State of 1st boss
 
     //General
+    this.heartArray = [];
     this.isGameOn = true;
     this.fps = 0;
   }
@@ -47,12 +50,19 @@ class Level1 {
     ctx.drawImage(this.bg, 0, this.bgY, this.bgW, this.bgH);
   };
 
-
   //Player
   lifeDraw = () => {
     this.playerLifeCount.forEach((heart) => {
       ctx.drawImage(heart.img, heart.x, heart.y, heart.w, heart.h);
     });
+  };
+
+  heartSpawing = () => {
+    if (this.fps % 1200 === 0) {
+      let randomNum = Math.random() * canvas.width;
+      let newHeart = new Heart(randomNum);
+      this.heartArray.push(newHeart);
+    }
   };
 
   //Enemies
@@ -78,7 +88,7 @@ class Level1 {
     }
   };
 
-  //Asteroids 
+  //Asteroids
   asteroidSpawn = () => {
     if (
       this.asteroidArray.length === 0 ||
@@ -93,13 +103,42 @@ class Level1 {
 
   //Boss
   bossSpawn = () => {
-    if (this.fps > 1800){
-      this.isBossActive = true;
-      this.boss.draw();
+    if (time === 60) {
+      this.isBoss1Active = true;
+      this.isSpawing = false;
     }
-  }
-  
+  };
+
   //Collisions
+
+  //Player - Object
+
+  checkCollisionSpaceshipHeart = () => {
+    this.heartArray.forEach((heart, indexHeart) => {
+      if (
+        heart.x < this.spaceship.x + this.spaceship.w &&
+        heart.x + this.spaceship.w > this.spaceship.x &&
+        heart.y < this.spaceship.y + this.spaceship.h &&
+        heart.h + heart.y > this.spaceship.y
+      ) {
+        this.heartArray.splice(indexHeart, 1);
+
+        if (this.playerLifeCount.length === 1) {
+          let newLife = new Heart(2);
+          this.playerLifeCount.push(newLife);
+        } else if (this.playerLifeCount.length === 2) {
+          let newLife = new Heart(3);
+          this.playerLifeCount.push(newLife);
+        } else if (this.playerLifeCount.length === 3) {
+          let newLife = new Heart(4);
+          this.playerLifeCount.push(newLife);
+        } else if (this.playerLifeCount.length === 4) {
+          let newLife = new Heart(5);
+          this.playerLifeCount.push(newLife);
+        }
+      }
+    });
+  };
 
   checkCollisionSpaceshipEnemy = () => {
     this.enemyArray.forEach((enemy, indexEnemy) => {
@@ -120,6 +159,73 @@ class Level1 {
     });
   };
 
+  checkCollisionAsterpodSpaceship = () => {
+    this.asteroidArray.forEach((asteroid, indexAsteroid) => {
+      if (
+        asteroid.x - 10 < this.spaceship.x + this.spaceship.w &&
+        asteroid.x - 10 + this.spaceship.w > this.spaceship.x &&
+        asteroid.y - 10 < this.spaceship.y + this.spaceship.h &&
+        asteroid.h - 10 + asteroid.y > this.spaceship.y &&
+        this.playerLifeCount.length > 0
+      ) {
+        let newExplosion = new ExplosionAsteroid(
+          asteroid.x,
+          asteroid.y,
+          asteroid.w,
+          asteroid.h
+        );
+        this.explosionAsteroidArray.push(newExplosion);
+
+        this.asteroidArray.splice(indexAsteroid, 1);
+        this.playerLifeCount.pop();
+      } else if (this.playerLifeCount.length === 0) {
+        this.gameOver();
+      }
+    });
+  };
+
+  checkCollisionSpaceshipBoss = () => {
+    if (
+      this.boss.x < this.spaceship.x + this.spaceship.w &&
+      this.boss.x + this.spaceship.w > this.spaceship.x &&
+      this.boss.y < this.spaceship.y + this.spaceship.h &&
+      this.boss.h + this.boss.y > this.spaceship.y
+    ) {
+      if (this.playerLifeCount.length > 0) {
+        this.playerLifeCount.pop();
+      } else {
+        this.gameOver();
+      }
+    }
+  };
+
+  // Enemies
+
+  checkCollisionEnemyAsteroid = () => {
+    this.enemyArray.forEach((enemy) => {
+      this.asteroidArray.forEach((asteroid) => {
+        if (
+          asteroid.x + 15 <= enemy.x + enemy.w &&
+          asteroid.x + enemy.w > enemy.x + 15 &&
+          asteroid.y + 15 <= enemy.y + enemy.h &&
+          asteroid.h + asteroid.y >= enemy.y + 15 &&
+          enemy.isMovingRight === true
+        ) {
+          enemy.isMovingRight = false;
+        } else if (
+          asteroid.x + 15 <= enemy.x + enemy.w &&
+          asteroid.x + enemy.w >= enemy.x + 15 &&
+          asteroid.y + 15 <= enemy.y + enemy.h &&
+          asteroid.h + asteroid.y >= enemy.y + 15 &&
+          enemy.isMovingRight === false
+        ) {
+          enemy.isMovingRight = true;
+        }
+      });
+    });
+  };
+
+  // Projectiles
   checkCollisionProjectileEnemy = () => {
     this.spaceship.projectileArray.forEach((projec) => {
       this.enemyArray.forEach((enemy, indexEnemy) => {
@@ -180,55 +286,6 @@ class Level1 {
     });
   };
 
-  checkCollisionEnemyAsteroid = () => {
-    this.enemyArray.forEach((enemy) => {
-      this.asteroidArray.forEach((asteroid) => {
-        if (
-          asteroid.x + 15 <= enemy.x + enemy.w &&
-          asteroid.x + enemy.w > enemy.x + 15 &&
-          asteroid.y + 15 <= enemy.y + enemy.h &&
-          asteroid.h + asteroid.y >= enemy.y + 15 &&
-          enemy.isMovingRight === true
-        ) {
-          enemy.isMovingRight = false;
-        } else if (
-          asteroid.x + 15 <= enemy.x + enemy.w &&
-          asteroid.x + enemy.w >= enemy.x + 15 &&
-          asteroid.y + 15 <= enemy.y + enemy.h &&
-          asteroid.h + asteroid.y >= enemy.y + 15 &&
-          enemy.isMovingRight === false
-        ) {
-          enemy.isMovingRight = true;
-        }
-      });
-    });
-  };
-
-  checkCollisionAsterpodSpaceship = () => {
-    this.asteroidArray.forEach((asteroid, indexAsteroid) => {
-      if (
-        asteroid.x - 10 < this.spaceship.x + this.spaceship.w &&
-        asteroid.x - 10 + this.spaceship.w > this.spaceship.x &&
-        asteroid.y - 10 < this.spaceship.y + this.spaceship.h &&
-        asteroid.h - 10 + asteroid.y > this.spaceship.y &&
-        this.playerLifeCount.length > 0
-      ) {
-        let newExplosion = new ExplosionAsteroid(
-          asteroid.x,
-          asteroid.y,
-          asteroid.w,
-          asteroid.h
-        );
-        this.explosionAsteroidArray.push(newExplosion);
-        
-        this.asteroidArray.splice(indexAsteroid, 1);
-        this.playerLifeCount.pop();
-      } else if (this.playerLifeCount.length === 0) {
-        this.gameOver();
-      }
-    });
-  };
-
   checkCollisionProjectileBossSpaceship = () => {
     this.boss.projectileArray.forEach((projectile, indexProjec) => {
       if (
@@ -241,7 +298,6 @@ class Level1 {
         this.playerLifeCount.pop();
       }
     });
-   
   };
 
   checkCollisionProjectileBoss = () => {
@@ -254,17 +310,24 @@ class Level1 {
       ) {
         this.boss.life--;
         this.spaceship.projectileArray.splice(indexProjec, 1);
-      } 
+      }
     });
 
     if (this.boss.life === 0) {
       count.innerText = Number(count.innerText) + 100;
-      let newExplosion = new Explosion(this.boss.x, this.boss.y, this.boss.w, this.boss.h);
+      let newExplosion = new Explosion(
+        this.boss.x,
+        this.boss.y,
+        this.boss.w,
+        this.boss.h
+      );
       this.explosionEnemyArray.push(newExplosion);
-      this.isBossActive = false;
-      this.fps = 0;
+      this.isBoss1Active = false;
+      this.isSpawing = true;
     }
   };
+
+  //Game Over
 
   gameOver = () => {
     this.isGameOn = false;
@@ -295,21 +358,25 @@ class Level1 {
 
   gameLoop = () => {
     //TODO CLEAN THE CANVAS
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     //TODO ACTIONS
 
     this.fps++;
 
-    //Player
+    //PLAYER
     this.spaceship.movement2();
     this.spaceship.projectileArray.forEach((projectile) => {
       projectile.movement(true);
     });
+    this.heartSpawing();
+    this.heartArray.forEach((heart) => {
+      heart.movement();
+    });
 
-    //Enemies
-
-    if (this.fps < 1800){
+    //ENEMIES
+    if (this.isSpawing === true) {
       this.enemiesSpawn();
     }
 
@@ -325,8 +392,7 @@ class Level1 {
       });
     });
 
-    //Asteroids
-
+    //ASTEROIDS
     this.asteroidSpawn();
     this.asteroidArray.forEach((asteroid) => {
       asteroid.rotateAsteroid();
@@ -335,47 +401,60 @@ class Level1 {
       asteroid.movement(true);
     });
 
-    // Boss
+    // BOSS
+    this.bossSpawn();
 
-    if (this.isBossActive === true) {
+    if (this.isBoss1Active === true) {
       this.boss.movement();
       this.boss.shoot();
     }
-    if (this.isBossActive === true) {
-      this.boss.projectileArray.forEach((projectile, index)=>{
+    if (this.isBoss1Active === true) {
+      this.boss.projectileArray.forEach((projectile, index) => {
         projectile.movement();
         projectile.wallCollisions();
-        if (projectile.x > canvas.height){
+        if (projectile.x > canvas.height) {
           this.boss.projectileArray.splice(index, 1);
         }
-      })
+      });
     }
 
-    //Collisions
+    //COLLISIONS
+    //Player - Object
+    this.checkCollisionSpaceshipHeart();
     this.checkCollisionSpaceshipEnemy();
-    this.checkCollisionProjectileEnemy();
     this.checkCollisionAsterpodSpaceship();
-    this.checkCollisionEnemyAsteroid();
+    this.checkCollisionSpaceshipBoss()
+
+    //Projectiles
+    this.checkCollisionProjectileEnemy();
     this.checkCollisionProjectileEnemySpaceship();
     this.checkCollisionProjectileSpaceshipAsteroid();
 
-    if (this.isBossActive === true) {
+    //Enemies
+    this.checkCollisionEnemyAsteroid();
+
+    //Boss
+    if (this.isBoss1Active === true) {
       this.checkCollisionProjectileBossSpaceship();
       this.boss.wallCollisions();
       this.checkCollisionProjectileBoss();
     }
+
     //TODO DRAW ELEMENTS
 
     this.bgDraw();
 
-    //Player
+    //PLAYER
     this.spaceship.draw();
     this.spaceship.projectileArray.forEach((projectile) => {
       projectile.draw();
     });
     this.lifeDraw();
+    this.heartArray.forEach((heart) => {
+      heart.draw();
+    });
 
-    //Enemies
+    //ENEMIES
     this.enemyArray.forEach((enemy) => {
       enemy.draw();
       enemy.projectileArray.forEach((projectile) => {
@@ -390,7 +469,7 @@ class Level1 {
       }, 1000);
     });
 
-    //Asteroids
+    //ASTEROIDS
     this.explosionAsteroidArray.forEach((explosion, indexExp) => {
       explosion.draw();
       explosion.y++;
@@ -402,13 +481,14 @@ class Level1 {
       asteroid.draw();
     });
 
-    //Boss
-    this.bossSpawn();
-    if (this.isBossActive === true) {
+    //BOSS
+    if (this.isBoss1Active === true) {
       this.boss.projectileArray.forEach((projectile) => {
         projectile.draw();
       });
     }
+    this.boss.draw();
+
     //TODO RECURSION
 
     if (this.isGameOn === true) {
