@@ -29,6 +29,8 @@ document.body.appendChild(song1);
 song1.volume -= 0.9;
 song1.autoplay = true;
 song1.loop = true;
+song1.play();
+
 
 //LEVEL 1 SONG
 
