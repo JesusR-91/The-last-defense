@@ -487,7 +487,9 @@ class Level1 {
         projectile.draw();
       });
     }
-    this.boss.draw();
+    if (this.isBoss1Active === true) {
+      this.boss.draw();
+    }
 
     //TODO RECURSION
 

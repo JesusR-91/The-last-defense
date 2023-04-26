@@ -105,6 +105,7 @@ const restart = () => {
   newLevel1.gameLoop();
   count.innerText = 0;
   song3.pause();
+  time = 0;
 
   if (
     volumBtn.innerHTML ===

@@ -56,7 +56,7 @@ class Spaceship1 {
     } else if (this.isShooting === true) {
       setTimeout(() => {
         this.isShooting = false;
-      }, 300);
+      }, 600);
     }
 
     if (this.projectileArray[0].x < 0) {
@@ -69,7 +69,7 @@ class Heart {
   constructor(x) {
     this.img = new Image();
     this.img.src = "Images/heart.png";
-    
+
     if (x === 1) {
       this.x = 15;
     } else if (x === 2) {
