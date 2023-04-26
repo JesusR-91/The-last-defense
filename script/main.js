@@ -22,37 +22,28 @@ const highScoreList = document.querySelector("#highScores");
 // MUSIC
 
 // INTRO-SONG
-const song1 = document.createElement("audio");
-song1.src = "Music/Intro.mp3";
-song1.setAttribute("preload", "auto");
-document.body.appendChild(song1);
+
+const song1 = new Audio("Music/intro.mp3");
 song1.volume -= 0.9;
-song1.autoplay = true;
+song1.preload = "auto";
 song1.loop = true;
-song1.play();
+
+// song1.autoplay = true;
+
 
 
 //LEVEL 1 SONG
-
-const song2 = document.createElement("audio");
-song2.src = "Music/level1.mp3";
-song2.setAttribute("preload", "auto");
-document.body.appendChild(song2);
+const song2 = new Audio("Music/level1.mp3");
 song2.volume -= 0.9;
-song2.autoplay = true;
+song1.preload = "auto";
 song2.loop = true;
-song2.pause();
 
 //GAME OVER SONG
 
-const song3 = document.createElement("audio");
-song3.src = "Music/game-over.mp3";
-song2.setAttribute("preload", "auto");
-document.body.appendChild(song3);
+const song3 = new Audio("Music/game-over.mp3");
 song3.volume -= 0.9;
-song3.autoplay = true;
+song1.preload = "auto";
 song3.loop = true;
-song3.pause();
 
 // const canvas2 = document.querySelector("#level2");
 // const ctx2 = canvas1.getContext("2d");
