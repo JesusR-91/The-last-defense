@@ -36,8 +36,6 @@ class ProjectileBoss {
 
     this.isMovingRight === true;
     this.isMovingDown === true;
-    
-
   }
 
   draw = () => {

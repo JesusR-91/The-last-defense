@@ -46,6 +46,10 @@ body {
     border-radius: 20px;
     
 }
+
+#title {
+   width: 300px;
+}
 #intro {
     display: flex;
     flex-direction: row;
@@ -58,8 +62,8 @@ body {
 
 #instructions{
     display: flex;
-    width: 1000px;
-    height: 150px;
+    width: 250px;
+    height: 125px;
     border-radius: 20px;
     flex-direction: column;
     align-items: center;
@@ -110,14 +114,29 @@ body {
 
 
 h1 {
-    font-size: 75px;
+    font-size: 50px;
     text-align: center;
     color: white;
     text-shadow: 10px 15px 15px black;
     
 }
 
-#start-btn, #restart-button  {
+#start-btn  {
+    font-family: 'Orbitron', sans-serif;
+    background-color: white; 
+    border: none;
+    border-radius: 20px;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    font-size: 16px;
+    height: 50px;
+    width: 120px;
+}
+
+#restart-button {
     font-family: 'Orbitron', sans-serif;
     background-color: white; 
     border: none;

@@ -91,6 +91,16 @@ const startGame = () => {
     });
   }, 1500);
 
+
+  // BOSS IMPLEMENTATIOn
+  // setInterval(() => {
+  //   if (newLevel1.boss === true) {
+  //       enemy.isShooting = false;
+  //   } else {
+  //       enemy.isShooting = true;
+  //   }
+  // }, 1500);
+
   // RECURSION
 
   newLevel1.gameLoop();
