@@ -193,11 +193,12 @@ class Boss1 {
     this.movY = 2;
 
     this.projectileArray = [];
+    this.life = 10;
 
     this.isMovingRight = true;
     this.isMovingUp = false;
 
-
+    this.seconds = 0;
     this.isShooting = false;
   }
 
@@ -231,28 +232,31 @@ class Boss1 {
     } else if (this.y < -200) {
       this.isMovingUp = false;
     }
-
-
   };
 
   shoot = () => {
     this.seconds++;
-    if (this.isShooting === true) {
-      let newProj = new ProjectileBoss(this.x + this.w / 4, this.y + this.h);
+    if (this.isShooting === true && this.seconds % 60 === 0) {
+      let newProj = new ProjectileBoss(this.x + this.w / 8, this.y + this.h);
       let newProj2 = new ProjectileBoss(
-        this.x + (this.w / 4) * 2,
+        this.x + (this.w / 8) * 2,
         this.y + this.h
       );
       let newProj3 = new ProjectileBoss(
-        this.x + (this.w / 4) * 3,
+        this.x + (this.w / 8) * 3,
         this.y + this.h
       );
-      let newProj4 = new ProjectileBoss(this.x + this.w, this.y + this.h);
+      let newProj4 = new ProjectileBoss(
+        this.x + (this.w / 8) * 4,
+        this.y + this.h
+      );
 
       this.projectileArray.push(newProj);
       this.projectileArray.push(newProj2);
       this.projectileArray.push(newProj3);
       this.projectileArray.push(newProj4);
+
+    
     }
 
     if (this.projectileArray.length > 0 && this.projectileArray[0].x < 0) {
@@ -261,10 +265,8 @@ class Boss1 {
   };
 }
 
-
 class Explosion {
-
-  constructor (x, y, w, h){
+  constructor(x, y, w, h) {
     this.x = x;
     this.y = y;
     this.w = w;
@@ -274,7 +276,7 @@ class Explosion {
     this.img.src = "Images/explosion.png";
   }
 
-  draw = () =>{
-    ctx.drawImage (this.img, this.x, this.y, this.w, this.h);
-  }
+  draw = () => {
+    ctx.drawImage(this.img, this.x, this.y, this.w, this.h);
+  };
 }

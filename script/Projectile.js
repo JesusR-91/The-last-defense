@@ -32,10 +32,13 @@ class ProjectileBoss {
     this.y = y;
     this.w = 5;
     this.h = 10;
-    this.speed = 4;
+    this.speedY = 2;
+    this.speedX = 4;
+
 
     this.isMovingRight === true;
-    this.isMovingDown === true;
+    this.isMovingDow === true;
+
   }
 
   draw = () => {
@@ -44,20 +47,18 @@ class ProjectileBoss {
 
   movement = () => {
     if (this.isMovingRight === true) {
-      this.x += this.speed;
+      this.x += this.speedX;
     } else {
-      this.x -= this.speed;
+      this.x -= this.speedX;
     }
-
-    if (this.isMovingDown === true) {
-      this.y += this.speed;
-    }
+    this.y += this.speedY;
+ 
   };
 
   wallCollisions = () => {
     if (this.x > canvas.width - this.w / 2) {
       this.isMovingRight = false;
-    } else if (this.x < 0 - this.w / 2) {
+    } else if (this.x < 0 + this.w / 2) {
       this.isMovingRight = true;
     }
   };

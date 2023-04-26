@@ -26,8 +26,8 @@ class Level1 {
 
     //Boss 
     //Working on it
-    // this.boss = new Boss1();
-    // this.isBossActive = false;
+    this.boss = new Boss1();
+    this.isBossActive = false;
 
     //General
     this.isGameOn = true;
@@ -36,6 +36,7 @@ class Level1 {
 
   //METHODS
 
+  //Background
   bgDraw = () => {
     if (this.bgY >= 0) {
       this.bgY = -755;
@@ -46,12 +47,15 @@ class Level1 {
     ctx.drawImage(this.bg, 0, this.bgY, this.bgW, this.bgH);
   };
 
+
+  //Player
   lifeDraw = () => {
     this.playerLifeCount.forEach((heart) => {
       ctx.drawImage(heart.img, heart.x, heart.y, heart.w, heart.h);
     });
   };
 
+  //Enemies
   enemiesSpawn = () => {
     if (
       this.enemyArray.length === 0 ||
@@ -74,13 +78,7 @@ class Level1 {
     }
   };
 
-  // Working on it
-  bossSpawn = () => {
-    if (this.fps >= 720){
-      this.isBossActive = true;
-      this.boss.draw();
-    }
-  }
+  //Asteroids 
   asteroidSpawn = () => {
     if (
       this.asteroidArray.length === 0 ||
@@ -92,6 +90,16 @@ class Level1 {
       this.asteroidArray.shift();
     }
   };
+
+  //Boss
+  bossSpawn = () => {
+    if (this.fps > 1800){
+      this.isBossActive = true;
+      this.boss.draw();
+    }
+  }
+  
+  //Collisions
 
   checkCollisionSpaceshipEnemy = () => {
     this.enemyArray.forEach((enemy, indexEnemy) => {
@@ -141,6 +149,8 @@ class Level1 {
         ) {
           enemy.projectileArray.splice(indexProjec, 1);
           this.playerLifeCount.pop();
+        } else if (this.playerLifeCount.length === 0) {
+          this.gameOver();
         }
       });
     });
@@ -219,6 +229,43 @@ class Level1 {
     });
   };
 
+  checkCollisionProjectileBossSpaceship = () => {
+    this.boss.projectileArray.forEach((projectile, indexProjec) => {
+      if (
+        projectile.x - 5 < this.spaceship.x + this.spaceship.w &&
+        projectile.x - 5 + this.spaceship.w > this.spaceship.x &&
+        projectile.y - 5 < this.spaceship.y + this.spaceship.h &&
+        projectile.h + projectile.y - 5 > this.spaceship.y
+      ) {
+        this.boss.projectileArray.splice(indexProjec, 1);
+        this.playerLifeCount.pop();
+      }
+    });
+   
+  };
+
+  checkCollisionProjectileBoss = () => {
+    this.spaceship.projectileArray.forEach((projec, indexProjec) => {
+      if (
+        projec.x < this.boss.x + this.boss.w &&
+        projec.x + this.boss.w > this.boss.x + 5 &&
+        this.boss.y < projec.y + projec.h &&
+        this.boss.h + this.boss.y > projec.y
+      ) {
+        this.boss.life--;
+        this.spaceship.projectileArray.splice(indexProjec, 1);
+      } 
+    });
+
+    if (this.boss.life === 0) {
+      count.innerText = Number(count.innerText) + 100;
+      let newExplosion = new Explosion(this.boss.x, this.boss.y, this.boss.w, this.boss.h);
+      this.explosionEnemyArray.push(newExplosion);
+      this.isBossActive = false;
+      this.fps = 0;
+    }
+  };
+
   gameOver = () => {
     this.isGameOn = false;
     canvas.style.display = "none";
@@ -261,11 +308,16 @@ class Level1 {
     });
 
     //Enemies
-    this.enemiesSpawn();
+
+    if (this.fps < 1800){
+      this.enemiesSpawn();
+    }
+
     this.enemyArray.forEach((enemy) => {
       enemy.wallCollisions();
       enemy.movement();
     });
+
     this.enemyArray.forEach((enemy) => {
       enemy.shoot();
       enemy.projectileArray.forEach((projectile) => {
@@ -285,10 +337,19 @@ class Level1 {
 
     // Boss
 
-    // if (this.isBossActive === true) {
-    //   this.boss.movement();
-    //   this.boss.shoot();
-    // }
+    if (this.isBossActive === true) {
+      this.boss.movement();
+      this.boss.shoot();
+    }
+    if (this.isBossActive === true) {
+      this.boss.projectileArray.forEach((projectile, index)=>{
+        projectile.movement();
+        projectile.wallCollisions();
+        if (projectile.x > canvas.height){
+          this.boss.projectileArray.splice(index, 1);
+        }
+      })
+    }
 
     //Collisions
     this.checkCollisionSpaceshipEnemy();
@@ -297,8 +358,11 @@ class Level1 {
     this.checkCollisionEnemyAsteroid();
     this.checkCollisionProjectileEnemySpaceship();
     this.checkCollisionProjectileSpaceshipAsteroid();
+
     if (this.isBossActive === true) {
+      this.checkCollisionProjectileBossSpaceship();
       this.boss.wallCollisions();
+      this.checkCollisionProjectileBoss();
     }
     //TODO DRAW ELEMENTS
 
@@ -339,11 +403,12 @@ class Level1 {
     });
 
     //Boss
-    // this.bossSpawn();
-    // this.boss.projectileArray.forEach((projectile) => {
-    //   projectile.draw();
-    // });
-
+    this.bossSpawn();
+    if (this.isBossActive === true) {
+      this.boss.projectileArray.forEach((projectile) => {
+        projectile.draw();
+      });
+    }
     //TODO RECURSION
 
     if (this.isGameOn === true) {

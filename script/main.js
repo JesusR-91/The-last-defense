@@ -28,10 +28,6 @@ song1.volume -= 0.9;
 song1.preload = "auto";
 song1.loop = true;
 
-// song1.autoplay = true;
-
-
-
 //LEVEL 1 SONG
 const song2 = new Audio("Music/level1.mp3");
 song2.volume -= 0.9;
@@ -74,6 +70,7 @@ const startGame = () => {
 
   newLevel1 = new Level1();
 
+  // Shooting intervasl
   setInterval(() => {
     newLevel1.enemyArray.forEach((enemy) => {
       if (enemy.isShooting === true) {
@@ -82,8 +79,12 @@ const startGame = () => {
         enemy.isShooting = true;
       }
     });
+    if (newLevel1.boss.isShooting === true) {
+      newLevel1.boss.isShooting = false;
+    } else {
+      newLevel1.boss.isShooting = true;
+    }
   }, 1500);
-
 
   // BOSS IMPLEMENTATIOn
   // setInterval(() => {
