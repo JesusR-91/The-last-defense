@@ -23,7 +23,7 @@ const highScoreList = document.querySelector("#highScores");
 
 // INTRO-SONG
 
-const song1 = new Audio("Music/intro.mp3");
+const song1 = new Audio("Music/Intro.mp3");
 song1.volume -= 0.9;
 song1.preload = "auto";
 song1.loop = true;
