@@ -113,7 +113,7 @@ class Level1 {
   };
 
   boss2Spawn = () => {
-    if (time === 1120) {
+    if (time > 1120) {
       this.isBoss2Active = true;
       this.isSpawing = false;
     }
@@ -483,6 +483,20 @@ class Level1 {
         projectile.wallCollisions();
         if (projectile.x > canvas.height) {
           this.boss.projectileArray.splice(index, 1);
+        }
+      });
+    }
+
+    if (this.isBoss2Active === true) {
+      this.boss2.movement();
+      this.boss2.shoot();
+    }
+    if (this.isBoss2Active === true) {
+      this.boss2.projectileArray.forEach((projectile, index) => {
+        projectile.movement();
+        projectile.wallCollisions();
+        if (projectile.x > canvas.height) {
+          this.boss2.projectileArray.splice(index, 1);
         }
       });
     }

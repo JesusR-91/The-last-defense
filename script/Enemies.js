@@ -343,7 +343,6 @@ class Boss2 {
       this.projectileArray.push(newProj3);
       this.projectileArray.push(newProj4);
 
-    
     }
 
     if (this.projectileArray.length > 0 && this.projectileArray[0].x < 0) {

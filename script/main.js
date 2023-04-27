@@ -288,7 +288,7 @@ const revealAllLines = () =>{
 const startGame = () => {
   // CHANGE SCREENS
 
-  console.log(playerName)
+
 
   mainScreen.style.display = "none";
   canvas.style.display = "block";
@@ -328,7 +328,13 @@ const startGame = () => {
     } else {
       newLevel1.boss.isShooting = true;
     }
-  }, 1500);
+
+    if (newLevel1.boss2.isShooting === true) {
+      newLevel1.boss2.isShooting = false;
+    } else {
+      newLevel1.boss2.isShooting = true;
+    }
+  }, 1000);
 
   // RECURSION
 

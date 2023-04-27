@@ -8,7 +8,7 @@ class Spaceship1 {
     this.w = 50;
     this.h = 80;
 
-    this.mov = 5;
+    this.mov = 10;
 
     this.projectileArray = [];
 
