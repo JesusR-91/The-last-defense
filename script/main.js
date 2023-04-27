@@ -3,8 +3,6 @@
 const mainScreen = document.querySelector("#main-screen");
 const startBtn = document.querySelector("#start-btn");
 
-mainScreen.style.display = "flex";
-
 const gameOverScreen = document.querySelector("#game-over");
 const restartBtn = document.querySelector("#restart-button");
 
@@ -29,7 +27,7 @@ const submitBtn = document.querySelector("#submitBtn")
 
 //DOOMs of dialogue
 
-const dialogueIntro = document.querySelector("#letter");
+const letterDOM = document.querySelector("#letter");
 const dialogueIntro1 = document.querySelector("#dialogue-intro .first");
 const dialogueIntro2 = document.querySelector("#dialogue-intro .second");
 const dialogueIntro3 = document.querySelector("#dialogue-intro .third");
@@ -213,7 +211,7 @@ song1.volume -= 0.9;
 song1.preload = "auto";
 song1.loop = true;
 
-//LEVEL 1 SONG
+//LEVEL SONG
 const song2 = new Audio("Music/level1.mp3");
 song2.volume -= 0.9;
 song1.preload = "auto";
@@ -225,6 +223,14 @@ const song3 = new Audio("Music/game-over.mp3");
 song3.volume -= 0.9;
 song1.preload = "auto";
 song3.loop = true;
+
+// LETTER-SONG
+
+const song4 = new Audio("Music/letter-music.mp3");
+song4.volume -= 0.9;
+song4.preload = "auto";
+song4.loop = true;
+
 
 let newLevel1;
 
@@ -282,9 +288,12 @@ const revealAllLines = () =>{
 const startGame = () => {
   // CHANGE SCREENS
 
+  console.log(playerName)
+
   mainScreen.style.display = "none";
   canvas.style.display = "block";
   countDOM.style.display = "flex";
+  song1.pause();
   song2.play();
 
   // Time controller : defines the timing of the game
@@ -339,7 +348,11 @@ const restart = () => {
   highScoreDOM.style.display = "none";
 };
 
+//Volume button function
+
 const volBtn = () => {
+  
+  //Song1
   if (
     volumBtn.innerHTML ===
       `<i class="fa-solid fa-volume-high fa-spin-pulse"></i>` &&
@@ -350,6 +363,18 @@ const volBtn = () => {
     song1.pause();
   } else if (
     volumBtn.innerHTML ===
+      `<i class="fa-solid fa-volume-xmark" style="color: #000000;"></i>` &&
+    song1.paused === true &&
+    mainScreen.style.display === "flex"
+  ) {
+    volumBtn.innerHTML = `<i class="fa-solid fa-volume-high fa-spin-pulse"></i>`;
+    song1.play();
+  }
+
+  
+  //Song 2
+  if (
+    volumBtn.innerHTML ===
       `<i class="fa-solid fa-volume-high fa-spin-pulse"></i>` &&
     song2.paused === false &&
     canvas.style.display === "block"
@@ -358,29 +383,24 @@ const volBtn = () => {
     song2.pause();
   } else if (
     volumBtn.innerHTML ===
-      `<i class="fa-solid fa-volume-high fa-spin-pulse"></i>` &&
-    song3.paused === false &&
-    gameOverScreen.style.display === "flex"
-  ) {
-    volumBtn.innerHTML = `<i class="fa-solid fa-volume-xmark" style="color: #000000;"></i>`;
-    song3.pause();
-  } else if (
-    volumBtn.innerHTML ===
-      `<i class="fa-solid fa-volume-xmark" style="color: #000000;"></i>` &&
-    song1.paused === true &&
-    mainScreen.style.display === "flex"
-  ) {
-    volumBtn.innerHTML = `<i class="fa-solid fa-volume-high fa-spin-pulse"></i>`;
-    song1.play();
-  } else if (
-    volumBtn.innerHTML ===
       `<i class="fa-solid fa-volume-xmark" style="color: #000000;"></i>` &&
     song2.paused === true &&
     canvas.style.display === "block"
   ) {
     volumBtn.innerHTML = `<i class="fa-solid fa-volume-high fa-spin-pulse"></i>`;
     song2.play();
-  } else if (
+  } 
+  
+  //Song 3
+  if (
+    volumBtn.innerHTML ===
+      `<i class="fa-solid fa-volume-high fa-spin-pulse"></i>` &&
+    song3.paused === false &&
+    gameOverScreen.style.display === "flex"
+  ) {
+    volumBtn.innerHTML = `<i class="fa-solid fa-volume-xmark" style="color: #000000;"></i>`;
+    song3.pause();
+  }  else if (
     volumBtn.innerHTML ===
       `<i class="fa-solid fa-volume-xmark" style="color: #000000;"></i>` &&
     song3.paused === true &&
@@ -389,19 +409,42 @@ const volBtn = () => {
     volumBtn.innerHTML = `<i class="fa-solid fa-volume-high fa-spin-pulse"></i>`;
     song3.play();
   }
+
+    //Song 4
+  
+    if (
+      volumBtn.innerHTML ===
+        `<i class="fa-solid fa-volume-high fa-spin-pulse"></i>` &&
+      song4.paused === false &&
+      (letterDOM.style.display !== "none" || nameInput.style.display === "flex")
+    ) {
+      volumBtn.innerHTML = `<i class="fa-solid fa-volume-xmark" style="color: #000000;"></i>`;
+      song4.pause();
+    } else if (
+      volumBtn.innerHTML ===
+        `<i class="fa-solid fa-volume-xmark" style="color: #000000;"></i>` &&
+        (letterDOM.style.display !== "none" || nameInput.style.display === "flex")
+    ) {
+      volumBtn.innerHTML = `<i class="fa-solid fa-volume-high fa-spin-pulse"></i>`;
+      song4.play();
+    }
 };
 
 const firstBtn = () =>{
-  dialogueIntro.style.display = "none";
+  letterDOM.style.display = "none";
   mainScreen.style.display = "none"
   nameInput.style.display = "flex";
-  volumBtn.innerHTML = `<i class="fa-solid fa-volume-high fa-spin-pulse"></i>`;
-  song1.play();
+  if (volumBtn.innerHTML !== `<i class="fa-solid fa-volume-high fa-spin-pulse"></i>`) {
+    volumBtn.innerHTML = `<i class="fa-solid fa-volume-high fa-spin-pulse"></i>`;
+    song4.play();
+  }
+
 }
 
 //Transition from the input to the main-screen
 const submiBtnTrans = () => {
   mainScreen.style.display = "flex";
+  nameInput.style.display = "none";
 }
 
 // EVENTS
@@ -429,7 +472,7 @@ window.addEventListener("keydown", (event) => {
     newLevel1.spaceship.movement(event);
   }
 
-  if (newLevel1.isGameOn === true && event.code === "Space") {
+  if (newLevel1.isGameOn === true && event.code === "Space" && newLevel1.isGameOn !== undefined) {
     newLevel1.spaceship.shoot(event);
   }
 });
