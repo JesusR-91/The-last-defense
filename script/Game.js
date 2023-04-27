@@ -334,7 +334,7 @@ class Level1 {
     canvas.style.display = "none";
     gameOverScreen.style.display = "flex";
     highScoreDOM.style.display = "contents";
-
+    playerName = document.querySelector("#name").value;
     checkHighScore(count.innerText);
 
     if (count.innerText < 20) {

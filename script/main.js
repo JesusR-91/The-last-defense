@@ -20,7 +20,7 @@ const highScoreList = document.querySelector("#highScores");
 const undersBtn = document.querySelector("#first-button")
 
 const nameInput = document.querySelector("#nameInput")
-let playerName = document.querySelector("#name").value;
+let playerName;
 const submitBtn = document.querySelector("#submitBtn")
 
 
@@ -294,7 +294,13 @@ const startGame = () => {
   canvas.style.display = "block";
   countDOM.style.display = "flex";
   song1.pause();
-  song2.play();
+  
+  if (
+    volumBtn.innerHTML ===
+    `<i class="fa-solid fa-volume-high fa-spin-pulse"></i>`
+  ) {
+    song2.play();
+  }
 
   // Time controller : defines the timing of the game
   setInterval(() => {
@@ -445,6 +451,16 @@ const firstBtn = () =>{
 const submiBtnTrans = () => {
   mainScreen.style.display = "flex";
   nameInput.style.display = "none";
+  song4.pause();
+  
+  if (
+    volumBtn.innerHTML ===
+    `<i class="fa-solid fa-volume-high fa-spin-pulse"></i>`
+  ) {
+    song1.play();
+
+  }
+  playerName = document.querySelector("#name").value;
 }
 
 // EVENTS
@@ -467,12 +483,12 @@ window.addEventListener("keydown", (event) => {
       event.code === "ArrowDown" ||
       event.code === "ArrowLeft" ||
       event.code === "ArrowRight") &&
-    newLevel1.isGameOn === true
+      canvas.style.display === "block" 
   ) {
     newLevel1.spaceship.movement(event);
   }
 
-  if (newLevel1.isGameOn === true && event.code === "Space" && newLevel1.isGameOn !== undefined) {
+  if ((canvas.style.display === "block") && (event.code === "Space"))  {
     newLevel1.spaceship.shoot(event);
   }
 });
@@ -484,17 +500,12 @@ const highScore = "highScores";
 
 const checkHighScore = (score) => {
   const highScores = JSON.parse(localStorage.getItem(highScore)) ?? [];
-  const lowestScore = highScores[numOfHighScores - 1].score ?? 0;
-
-  if (score > lowestScore) {
-    saveHighScore(score, highScores);
-  }
-
+  saveHighScore(score, highScores);
   showHighScores();
 };
 
 const saveHighScore = (score, highScores) => {
-  const newScore = { score, playerName };
+  const newScore = { score: score, name : playerName };
 
   // 1. Add to list
   highScores.push(newScore);
