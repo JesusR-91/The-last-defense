@@ -19,7 +19,190 @@ const ctx = canvas.getContext("2d");
 const highScoreDOM = document.querySelector("#highScoreList");
 const highScoreList = document.querySelector("#highScores");
 
+const undersBtn = document.querySelector("#first-button")
+
+const nameInput = document.querySelector("#nameInput")
+let playerName = document.querySelector("#name").value;
+const submitBtn = document.querySelector("#submitBtn")
+
+
+
+//DOOMs of dialogue
+
+const dialogueIntro = document.querySelector("#letter");
+const dialogueIntro1 = document.querySelector("#dialogue-intro .first");
+const dialogueIntro2 = document.querySelector("#dialogue-intro .second");
+const dialogueIntro3 = document.querySelector("#dialogue-intro .third");
+const dialogueIntro4 = document.querySelector("#dialogue-intro .fourth");
+const dialogueIntro5 = document.querySelector("#dialogue-intro .fifth");
+const dialogueIntro6 = document.querySelector("#dialogue-intro .sixth");
+const dialogueIntro7 = document.querySelector("#dialogue-intro .seventh");
+
+
 let time = 0;
+
+
+//DIALOGUE
+
+let textSpeed = {
+  pause: 500,
+  slow: 120,
+  normal: 70,
+  fast: 40,
+};
+
+let textLines = [
+  {
+    string:
+      "I, hope this message finds you well. I am writing to inform you of an upcoming mission that I would like you to be a part of. Our mission will take us into space, where we will be defending our planet from a potential alien threat.",
+    speed: textSpeed.fast,
+  },
+];
+let textLines1 = [
+  {
+    string:
+      "As you know, our planet has been under attack from aliens in the past, and we have reason to believe that they may be planning another attack soon. Our team has been tasked with preventing this attack and protecting our planet from harm.",
+    speed: textSpeed.fast,
+  },
+];
+
+let textLines2 = [
+  {
+    string:
+      "During this mission, you will be responsible for piloting our spacecraft and coordinating with our ground team to gather intelligence and intercept any incoming alien threats. You will be working closely with our team of experts in space combat to ensure that we are fully prepared to defend ourselves against any potential attack.",
+    speed: textSpeed.fast,
+  },
+];
+let textLines3 = [
+  {
+    string:
+      "I understand that this mission will not be easy, but I have the utmost confidence in you and the rest of our team to complete this critical mission. The safety of our planet is at stake, and I know that together, we can rise to this challenge.",
+    speed: textSpeed.fast,
+  },
+];
+
+let textLines4 = [
+  {
+    string:
+      "If you have any questions or concerns, please don't hesitate to reach out to me or any other member of the team.",
+    speed: textSpeed.fast,
+  },
+];
+
+let textLines5 = [{ string: "Best regards,", speed: textSpeed.normal }];
+
+let textLines6 = [
+  { string: "Colonel Ripley", speed: textSpeed.normal, classes: ["bold"] },
+];
+
+let arrayLine = [];
+let arrayLine1 = [];
+let arrayLine2 = [];
+let arrayLine3 = [];
+let arrayLine4 = [];
+let arrayLine5 = [];
+let arrayLine6 = [];
+
+
+//Spliting the strings into character
+
+textLines.forEach((line) => {
+  line.string.split("").forEach((character) => {
+    let span = document.createElement("span");
+    span.textContent = character;
+    dialogueIntro1.appendChild(span);
+    arrayLine.push({
+      span: span,
+      delayAfter: line.speed,
+      isSpace: character === " ",
+      classes: line.classes || [],
+    });
+  });
+});
+
+textLines1.forEach((line) => {
+  line.string.split("").forEach((character) => {
+    let span = document.createElement("span");
+    span.textContent = character;
+    dialogueIntro2.appendChild(span);
+    arrayLine1.push({
+      span: span,
+      delayAfter: line.speed,
+      isSpace: character === " ",
+      classes: line.classes || [],
+    });
+  });
+});
+
+textLines2.forEach((line) => {
+  line.string.split("").forEach((character) => {
+    let span = document.createElement("span");
+    span.textContent = character;
+    dialogueIntro3.appendChild(span);
+    arrayLine2.push({
+      span: span,
+      delayAfter: line.speed,
+      isSpace: character === " ",
+      classes: line.classes || [],
+    });
+  });
+});
+
+textLines3.forEach((line) => {
+  line.string.split("").forEach((character) => {
+    let span = document.createElement("span");
+    span.textContent = character;
+    dialogueIntro4.appendChild(span);
+    arrayLine3.push({
+      span: span,
+      delayAfter: line.speed,
+      isSpace: character === " ",
+      classes: line.classes || [],
+    });
+  });
+});
+
+textLines4.forEach((line) => {
+  line.string.split("").forEach((character) => {
+    let span = document.createElement("span");
+    span.textContent = character;
+    dialogueIntro5.appendChild(span);
+    arrayLine4.push({
+      span: span,
+      delayAfter: line.speed,
+      isSpace: character === " ",
+      classes: line.classes || [],
+    });
+  });
+});
+
+textLines5.forEach((line) => {
+  line.string.split("").forEach((character) => {
+    let span = document.createElement("span");
+    span.textContent = character;
+    dialogueIntro6.appendChild(span);
+    arrayLine5.push({
+      span: span,
+      delayAfter: line.speed,
+      isSpace: character === " ",
+      classes: line.classes || [],
+    });
+  });
+});
+
+textLines6.forEach((line) => {
+  line.string.split("").forEach((character) => {
+    let span = document.createElement("span");
+    span.textContent = character;
+    dialogueIntro7.appendChild(span);
+    arrayLine6.push({
+      span: span,
+      delayAfter: line.speed,
+      isSpace: character === " ",
+      classes: line.classes || [],
+    });
+  });
+});
 
 // MUSIC
 
@@ -43,15 +226,58 @@ song3.volume -= 0.9;
 song1.preload = "auto";
 song3.loop = true;
 
-// const canvas2 = document.querySelector("#level2");
-// const ctx2 = canvas1.getContext("2d");
-
-// const canvas3 = document.querySelector("#level3");
-// const ctx3 = canvas1.getContext("2d");
-
 let newLevel1;
 
 // FUNCTIONS
+
+//Function to reveal the characters one
+
+const revealOneCharacter = (list) => {
+  let next = list.splice(0, 1)[0];
+  next.span.classList.add("revealed");
+
+  next.classes.forEach((clas) => {
+    next.span.classList.add(clas);
+  });
+
+  let delay = next.delayAfter;
+
+  if (list.length > 0) {
+    setTimeout(() => {
+      revealOneCharacter(list);
+    }, delay);
+  }
+};
+
+const revealAllLines = () =>{
+  revealOneCharacter(arrayLine);
+  setTimeout (() =>{
+  revealOneCharacter(arrayLine1);
+  },10500)
+
+  setTimeout(() => {
+    revealOneCharacter(arrayLine2); 
+  }, 21500);
+
+  setTimeout(() => {
+    revealOneCharacter(arrayLine3);
+  }, 37000);
+
+  setTimeout(() => {
+    revealOneCharacter(arrayLine4);
+  }, 48000);
+
+  setTimeout(() => {
+    revealOneCharacter(arrayLine5);
+  }, 54000);
+
+  setTimeout(() => {
+    revealOneCharacter(arrayLine6);
+  }, 56000);
+
+}
+
+//Game states
 
 const startGame = () => {
   // CHANGE SCREENS
@@ -59,16 +285,12 @@ const startGame = () => {
   mainScreen.style.display = "none";
   canvas.style.display = "block";
   countDOM.style.display = "flex";
-  volumBtn.innerHTML = `<i class="fa-solid fa-volume-high fa-spin-pulse"></i>`;
   song2.play();
 
-
   // Time controller : defines the timing of the game
-  setInterval (()=>{
-    time++
-  },1000);
-
- 
+  setInterval(() => {
+    time++;
+  }, 1000);
 
   // CREATE THE OBJECT
 
@@ -77,7 +299,7 @@ const startGame = () => {
   // Shooting intervasl for enemies
 
   setInterval(() => {
-    //Regular enemies    
+    //Regular enemies
     newLevel1.enemyArray.forEach((enemy) => {
       if (enemy.isShooting === true) {
         enemy.isShooting = false;
@@ -169,13 +391,32 @@ const volBtn = () => {
   }
 };
 
+const firstBtn = () =>{
+  dialogueIntro.style.display = "none";
+  mainScreen.style.display = "none"
+  nameInput.style.display = "flex";
+  volumBtn.innerHTML = `<i class="fa-solid fa-volume-high fa-spin-pulse"></i>`;
+  song1.play();
+}
+
+//Transition from the input to the main-screen
+const submiBtnTrans = () => {
+  mainScreen.style.display = "flex";
+}
+
 // EVENTS
+
+revealAllLines();
 
 startBtn.addEventListener("click", startGame);
 
 restartBtn.addEventListener("click", restart);
 
 volumBtn.addEventListener("click", volBtn);
+
+undersBtn.addEventListener("click", firstBtn);
+
+submitBtn.addEventListener("click", submiBtnTrans)
 
 window.addEventListener("keydown", (event) => {
   if (
@@ -210,8 +451,7 @@ const checkHighScore = (score) => {
 };
 
 const saveHighScore = (score, highScores) => {
-  const name = prompt("You got a highscore! Enter name:");
-  const newScore = { score, name };
+  const newScore = { score, playerName };
 
   // 1. Add to list
   highScores.push(newScore);
