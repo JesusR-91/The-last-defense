@@ -30,6 +30,9 @@ class Level1 {
     //Boss
     this.boss = new Boss1();
     this.isBoss1Active = false; //State of 1st boss
+    this.boss2 = new Boss2();
+    this.isBoss2Active = false; //State of 2st boss
+
 
     //General
     this.heartArray = [];
@@ -105,6 +108,13 @@ class Level1 {
   bossSpawn = () => {
     if (time === 60) {
       this.isBoss1Active = true;
+      this.isSpawing = false;
+    }
+  };
+
+  boss2Spawn = () => {
+    if (time === 1120) {
+      this.isBoss2Active = true;
       this.isSpawing = false;
     }
   };
@@ -190,6 +200,21 @@ class Level1 {
       this.boss.x + this.spaceship.w > this.spaceship.x &&
       this.boss.y < this.spaceship.y + this.spaceship.h &&
       this.boss.h + this.boss.y > this.spaceship.y
+    ) {
+      if (this.playerLifeCount.length > 0) {
+        this.playerLifeCount.pop();
+      } else {
+        this.gameOver();
+      }
+    }
+  };
+
+  checkCollisionSpaceshipBoss2 = () => {
+    if (
+      this.boss2.x < this.spaceship.x + this.spaceship.w &&
+      this.boss2.x + this.spaceship.w > this.spaceship.x &&
+      this.boss2.y < this.spaceship.y + this.spaceship.h &&
+      this.boss2.h + this.boss2.y > this.spaceship.y
     ) {
       if (this.playerLifeCount.length > 0) {
         this.playerLifeCount.pop();
@@ -299,6 +324,19 @@ class Level1 {
       }
     });
   };
+  checkCollisionProjectileBoss2Spaceship = () => {
+    this.boss2.projectileArray.forEach((projectile, indexProjec) => {
+      if (
+        projectile.x - 5 < this.spaceship.x + this.spaceship.w &&
+        projectile.x - 5 + this.spaceship.w > this.spaceship.x &&
+        projectile.y - 5 < this.spaceship.y + this.spaceship.h &&
+        projectile.h + projectile.y - 5 > this.spaceship.y
+      ) {
+        this.boss2.projectileArray.splice(indexProjec, 1);
+        this.playerLifeCount.pop();
+      }
+    });
+  };
 
   checkCollisionProjectileBoss = () => {
     this.spaceship.projectileArray.forEach((projec, indexProjec) => {
@@ -324,6 +362,35 @@ class Level1 {
       this.explosionEnemyArray.push(newExplosion);
       this.isBoss1Active = false;
       this.isSpawing = true;
+      time = 1000;
+    }
+  };
+
+  checkCollisionProjectileBoss2 = () => {
+    this.spaceship.projectileArray.forEach((projec, indexProjec) => {
+      if (
+        projec.x < this.boss2.x + this.boss2.w &&
+        projec.x + this.boss2.w > this.boss2.x + 5 &&
+        this.boss2.y < projec.y + projec.h &&
+        this.boss2.h + this.boss2.y > projec.y
+      ) {
+        this.boss2.life--;
+        this.spaceship.projectileArray.splice(indexProjec, 1);
+      }
+    });
+
+    if (this.boss2.life === 0) {
+      count.innerText = Number(count.innerText) + 300;
+      let newExplosion = new Explosion(
+        this.boss2.x,
+        this.boss2.y,
+        this.boss2.w,
+        this.boss2.h
+      );
+      this.explosionEnemyArray.push(newExplosion);
+      this.isBoss2Active = false;
+      this.isSpawing = true;
+      time = 0;
     }
   };
 
@@ -404,6 +471,7 @@ class Level1 {
 
     // BOSS
     this.bossSpawn();
+    this.boss2Spawn();
 
     if (this.isBoss1Active === true) {
       this.boss.movement();
@@ -439,6 +507,12 @@ class Level1 {
       this.checkCollisionProjectileBossSpaceship();
       this.boss.wallCollisions();
       this.checkCollisionProjectileBoss();
+    }
+
+    if (this.isBoss2Active === true) {
+      this.checkCollisionProjectileBoss2Spaceship();
+      this.boss2.wallCollisions();
+      this.checkCollisionProjectileBoss2();
     }
 
     //TODO DRAW ELEMENTS
@@ -490,6 +564,15 @@ class Level1 {
     }
     if (this.isBoss1Active === true) {
       this.boss.draw();
+    }
+
+    if (this.isBoss2Active === true) {
+      this.boss2.projectileArray.forEach((projectile) => {
+        projectile.draw();
+      });
+    }
+    if (this.isBoss2Active === true) {
+      this.boss2.draw();
     }
 
     //TODO RECURSION

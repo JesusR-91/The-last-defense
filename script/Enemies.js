@@ -265,6 +265,93 @@ class Boss1 {
   };
 }
 
+class Boss2 {
+  constructor() {
+    this.img = new Image();
+    this.img.src = "Images/boss2.png";
+
+    this.x = canvas.width / 2;
+
+    this.y = -400;
+    this.w = 300;
+    this.h = 240;
+
+    this.movX = 4;
+    this.movY = 2;
+
+    this.projectileArray = [];
+    this.life = 15;
+
+    this.isMovingRight = true;
+    this.isMovingUp = false;
+
+    this.seconds = 0;
+    this.isShooting = false;
+  }
+
+  draw = () => {
+    ctx.drawImage(this.img, this.x, this.y, this.w, this.h);
+  };
+
+  movement = () => {
+    if (this.isMovingRight === true) {
+      this.x += this.movX;
+    } else {
+      this.x -= this.movX;
+    }
+
+    if (this.isMovingUp === true) {
+      this.y -= this.movY;
+    } else if (this.isMovingUp === false) {
+      this.y += this.movY;
+    }
+  };
+
+  wallCollisions = () => {
+    if (this.x > canvas.width - this.w / 2) {
+      this.isMovingRight = false;
+    } else if (this.x < 0 - this.w / 2) {
+      this.isMovingRight = true;
+    }
+
+    if (this.y > 150) {
+      this.isMovingUp = true;
+    } else if (this.y < -200) {
+      this.isMovingUp = false;
+    }
+  };
+
+  shoot = () => {
+    this.seconds++;
+    if (this.isShooting === true && this.seconds % 60 === 0) {
+      let newProj = new ProjectileBoss(this.x + this.w / 8, this.y + this.h);
+      let newProj2 = new ProjectileBoss(
+        this.x + (this.w / 8) * 2,
+        this.y + this.h
+      );
+      let newProj3 = new ProjectileBoss(
+        this.x + (this.w / 8) * 3,
+        this.y + this.h
+      );
+      let newProj4 = new ProjectileBoss(
+        this.x + (this.w / 8) * 4,
+        this.y + this.h
+      );
+
+      this.projectileArray.push(newProj);
+      this.projectileArray.push(newProj2);
+      this.projectileArray.push(newProj3);
+      this.projectileArray.push(newProj4);
+
+    
+    }
+
+    if (this.projectileArray.length > 0 && this.projectileArray[0].x < 0) {
+      this.projectileArray.shift();
+    }
+  };
+}
+
 class Explosion {
   constructor(x, y, w, h) {
     this.x = x;
