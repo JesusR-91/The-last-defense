@@ -21,7 +21,7 @@ class Level1 {
     //Enemies
     this.enemyArray = [];
     this.explosionEnemyArray = [];
-    this.isSpawing = true; //Define if the regular enemies are spawing or not
+    this.isSpawming = true; //Define if the regular enemies are spawing or not
 
     //Asteroids
     this.asteroidArray = [];
@@ -60,7 +60,7 @@ class Level1 {
     });
   };
 
-  heartSpawing = () => {
+  heartSpawming = () => {
     if (this.fps % 1200 === 0) {
       let randomNum = Math.random() * canvas.width;
       let newHeart = new Heart(randomNum);
@@ -108,14 +108,14 @@ class Level1 {
   bossSpawn = () => {
     if (time === 60) {
       this.isBoss1Active = true;
-      this.isSpawing = false;
+      this.isSpawming = false;
     }
   };
 
   boss2Spawn = () => {
     if (time > 1120) {
       this.isBoss2Active = true;
-      this.isSpawing = false;
+      this.isSpawming = false;
     }
   };
 
@@ -361,8 +361,10 @@ class Level1 {
       );
       this.explosionEnemyArray.push(newExplosion);
       this.isBoss1Active = false;
-      this.isSpawing = true;
+      this.isSpawming = true;
       time = 1000;
+
+      this.enemyArray.forEach
     }
   };
 
@@ -389,7 +391,7 @@ class Level1 {
       );
       this.explosionEnemyArray.push(newExplosion);
       this.isBoss2Active = false;
-      this.isSpawing = true;
+      this.isSpawming = true;
       time = 0;
     }
   };
@@ -401,7 +403,6 @@ class Level1 {
     canvas.style.display = "none";
     gameOverScreen.style.display = "flex";
     highScoreDOM.style.display = "contents";
-    playerName = document.querySelector("#name").value;
     checkHighScore(count.innerText);
 
     if (count.innerText < 20) {
@@ -438,13 +439,13 @@ class Level1 {
     this.spaceship.projectileArray.forEach((projectile) => {
       projectile.movement(true);
     });
-    this.heartSpawing();
+    this.heartSpawming();
     this.heartArray.forEach((heart) => {
       heart.movement();
     });
 
     //ENEMIES
-    if (this.isSpawing === true) {
+    if (this.isSpawming === true) {
       this.enemiesSpawn();
     }
 
